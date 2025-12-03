@@ -1,0 +1,49 @@
+#include "knight.h"
+#include "dragon.h"
+#include "elf.h"
+#include <iostream>
+
+Knight::Knight(int x, int y, const std::string& name) : NPC(KnightType, x, y, name) {}
+Knight::Knight(std::istream &is) : NPC(KnightType, is) {}
+
+bool Knight::accept(std::shared_ptr<NPC> visitor){
+    return visitor->fight(std::shared_ptr<Knight>(this,[](Knight*){}));
+}
+
+void Knight::print()
+{
+    std::cout << *this << std::endl;
+}
+
+bool Knight::fight(std::shared_ptr<Dragon> other) 
+{
+    // Странствующий рыцарь vs Дракон: РЫЦАРЬ УБИВАЕТ ДРАКОНА
+    fight_notify(other, true);
+    return true;  // Всегда побеждает дракона
+}
+
+bool Knight::fight(std::shared_ptr<Knight> other) 
+{
+    // Странствующий рыцарь vs Странствующий рыцарь: НИКТО НЕ ПОБЕЖДАЕТ
+    fight_notify(other, false);
+    return false;  // Не могут убить друг друга
+}
+
+bool Knight::fight(std::shared_ptr<Elf> other) 
+{
+    // Странствующий рыцарь vs Эльф: ПРОИГРЫВАЕТ ЭЛЬФУ
+    fight_notify(other, false);
+    return false;  // Проигрывает эльфу
+}
+
+void Knight::save(std::ostream &os) 
+{
+    os << KnightType << std::endl;
+    NPC::save(os);
+}
+
+std::ostream &operator<<(std::ostream &os, Knight &knight)
+{
+    os << "Странствующий рыцарь: " << *static_cast<NPC *>(&knight);
+    return os;
+}

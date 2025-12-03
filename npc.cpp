@@ -1,9 +1,8 @@
 #include "npc.h"
-#include "dragon.h"
-#include "knight.h"
-#include "black_knight.h"
+#include "Dragon.h"
+#include "StrangeKnight.h"
+#include "Elf.h"
 #include <sstream>
-#include <algorithm>
 
 NPC::NPC(NpcType t, int _x, int _y, const std::string& _name) : 
     type(t), x(_x), y(_y), name(_name) 
@@ -18,7 +17,7 @@ NPC::NPC(NpcType t, std::istream &is) : type(t)
 {
     is >> x;
     is >> y;
-    std::getline(is >> std::ws, name); 
+    std::getline(is >> std::ws, name);
 }
 
 void NPC::subscribe(std::shared_ptr<IFightObserver> observer)
@@ -29,17 +28,26 @@ void NPC::subscribe(std::shared_ptr<IFightObserver> observer)
 void NPC::fight_notify(const std::shared_ptr<NPC> defender, bool win)
 {
     for (auto &o : observers)
-        o->on_fight(std::shared_ptr<NPC>(this, [](NPC *) {}), defender, win);
+        o->on_fight(shared_from_this(), defender, win);
 }
 
 bool NPC::is_close(const std::shared_ptr<NPC> &other, size_t distance)
 {
     std::lock_guard<std::mutex> lck(mtx);
     const auto [other_x, other_y] = other->position();
-    if ((std::pow(x - other_x, 2) + std::pow(y - other_y, 2)) <= std::pow(distance, 2))
-        return true;
-    else
-        return false;
+    return (std::pow(x - other_x, 2) + std::pow(y - other_y, 2)) <= std::pow(distance, 2);
+}
+
+bool NPC::fight(std::shared_ptr<NPC> other)
+{
+    bool result = can_defeat(other->get_type());
+    fight_notify(other, result);
+    return result;
+}
+
+bool NPC::accept(std::shared_ptr<NPC> visitor)
+{
+    return visitor->fight(shared_from_this());
 }
 
 NpcType NPC::get_type() const
@@ -50,6 +58,16 @@ NpcType NPC::get_type() const
 std::pair<int, int> NPC::position() const
 {
     return {x, y};
+}
+
+void NPC::set_name(const std::string& new_name)
+{
+    name = new_name;
+}
+
+std::string NPC::get_name() const
+{
+    return name;
 }
 
 void NPC::save(std::ostream &os)
@@ -71,7 +89,6 @@ std::ostream &operator<<(std::ostream &os, NPC &npc)
 void NPC::move(int shift_x, int shift_y, int max_x, int max_y)
 {
     std::lock_guard<std::mutex> lck(mtx);
-
     if ((x + shift_x >= 0) && (x + shift_x <= max_x))
         x += shift_x;
     if ((y + shift_y >= 0) && (y + shift_y <= max_y))

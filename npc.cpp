@@ -79,10 +79,10 @@ void NPC::save(std::ostream &os)
 
 std::ostream &operator<<(std::ostream &os, NPC &npc)
 {
-    os << "{Тип: " << npc.get_type_str() 
-       << ", Имя: " << npc.get_name() 
+    os << "{type: " << npc.get_type_str() 
+       << ", name: " << npc.get_name() 
        << ", x:" << npc.x << ", y:" << npc.y 
-       << ", " << (npc.alive ? "жив" : "мертв") << "}";
+       << ", " << (npc.alive ? "alive" : "dead") << "}";
     return os;
 }
 

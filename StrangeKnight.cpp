@@ -22,11 +22,11 @@ void Knight::save(std::ostream &os)
 
 std::string Knight::get_type_str() const
 {
-    return "Странствующий рыцарь";
+    return "SKnight";
 }
 
 std::ostream &operator<<(std::ostream &os, Knight &knight)
 {
-    os << "Странствующий рыцарь: " << *static_cast<NPC *>(&knight);
+    os << "SKnight: " << *static_cast<NPC *>(&knight);
     return os;
 }

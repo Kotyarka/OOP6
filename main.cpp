@@ -169,6 +169,27 @@ void remove_npc(set_t& npcs)
 
 void start_combat_mode(set_t& npcs)
 {
+    if (npcs.empty()) {
+        std::cout << "\nCannot start combat mode: no NPCs available!" << std::endl;
+        std::cout << "Press Enter to continue...";
+        std::cin.get();
+        return;
+    }
+    
+    int alive_count = 0;
+    for (const auto& npc : npcs) {
+        if (npc->is_alive()) {
+            alive_count++;
+            if (alive_count >= 2) break;
+        }
+    }
+    
+    if (alive_count < 2) {
+        std::cout << "\nCannot start combat mode: need at least 2 alive NPCs!" << std::endl;
+        std::cout << "Press Enter to continue...";
+        std::cin.get();
+        return;
+    }
     std::cout << "\n=== COMBAT MODE ===" << std::endl;
     
     int distance;
@@ -432,15 +453,15 @@ int main()
     std::cout << "- Elf kills wandering knight" << std::endl;
     std::cout << "====================" << std::endl;
     
-    std::cout << "Generating initial NPCs..." << std::endl;
-    for (size_t i = 0; i < 10; ++i)
-    {
-        NpcType type = static_cast<NpcType>((std::rand() % 3) + 1);
-        int x = std::rand() % 501;
-        int y = std::rand() % 501;
-        auto npc = NPCFactory::create(type, x, y);
-        if (npc) npcs.insert(npc);
-    }
+ //   std::cout << "Generating initial NPCs..." << std::endl;
+ //   for (size_t i = 0; i < 10; ++i)
+// {
+  //      NpcType type = static_cast<NpcType>((std::rand() % 3) + 1);
+    //    int x = std::rand() % 501;
+  //      int y = std::rand() % 501;
+ //       auto npc = NPCFactory::create(type, x, y);
+ //       if (npc) npcs.insert(npc);
+  //  }
     
     editor_mode(npcs);
     

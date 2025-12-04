@@ -22,10 +22,10 @@ public:
         if (win)
         {
             std::lock_guard<std::mutex> lck(mtx);
-            std::cout << "\n=== УБИЙСТВО ===" << std::endl;
-            std::cout << "Атакующий: ";
+            std::cout << "\n=== KILL ===" << std::endl;
+            std::cout << "Attacker: ";
             attacker->print();
-            std::cout << "Защитник: ";
+            std::cout << "Defender: ";
             defender->print();
             std::cout << "----------------" << std::endl;
         }
@@ -65,11 +65,11 @@ public:
                 auto now = std::chrono::system_clock::now();
                 std::time_t time = std::chrono::system_clock::to_time_t(now);
                 
-                log_file << "\n=== УБИЙСТВО ===" << std::endl;
-                log_file << "Время: " << std::ctime(&time);
-                log_file << "Атакующий: " << attacker->get_type_str() 
+                log_file << "\n=== Kill ===" << std::endl;
+                log_file << "Time: " << std::ctime(&time);
+                log_file << "Atacker: " << attacker->get_type_str() 
                          << " \"" << attacker->get_name() << "\"" << std::endl;
-                log_file << "Защитник: " << defender->get_type_str() 
+                log_file << "Defender: " << defender->get_type_str() 
                          << " \"" << defender->get_name() << "\"" << std::endl;
                 log_file << "----------------" << std::endl;
                 log_file.flush();

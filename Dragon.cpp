@@ -22,11 +22,11 @@ void Dragon::save(std::ostream &os)
 
 std::string Dragon::get_type_str() const
 {
-    return "Дракон";
+    return "Elf";
 }
 
 std::ostream &operator<<(std::ostream &os, Dragon &dragon)
 {
-    os << "Дракон: " << *static_cast<NPC *>(&dragon);
+    os << "Elf: " << *static_cast<NPC *>(&dragon);
     return os;
 }

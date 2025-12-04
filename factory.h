@@ -71,10 +71,10 @@ public:
     {
         switch (type)
         {
-        case DragonType: return "Дракон";
-        case KnightType: return "Странствующий рыцарь";
-        case ElfType: return "Эльф";
-        default: return "Неизвестный";
+        case DragonType: return "Dragon";
+        case KnightType: return "SKnight";
+        case ElfType: return "Elf";
+        default: return "Unknown";
         }
     }
 };
@@ -116,8 +116,8 @@ set_t load(const std::string &filename)
 
 void print_all(const set_t &array)
 {
-    std::cout << "\n=== СПИСОК NPC ===" << std::endl;
-    std::cout << "Всего: " << array.size() << std::endl;
+    std::cout << "\n=== NPC List===" << std::endl;
+    std::cout << "ALL: " << array.size() << std::endl;
     
     int alive_count = 0;
     for (auto &n : array)
@@ -129,7 +129,7 @@ void print_all(const set_t &array)
         }
     }
     
-    std::cout << "\nЖивых: " << alive_count << std::endl;
-    std::cout << "Мертвых: " << (array.size() - alive_count) << std::endl;
+    std::cout << "\nAlive: " << alive_count << std::endl;
+    std::cout << "Dead: " << (array.size() - alive_count) << std::endl;
     std::cout << "==================" << std::endl;
 }

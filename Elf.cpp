@@ -22,11 +22,11 @@ void Elf::save(std::ostream &os)
 
 std::string Elf::get_type_str() const
 {
-    return "Эльф";
+    return "Elf";
 }
 
 std::ostream &operator<<(std::ostream &os, Elf &elf)
 {
-    os << "Эльф: " << *static_cast<NPC *>(&elf);
+    os << "Elf: " << *static_cast<NPC *>(&elf);
     return os;
 }

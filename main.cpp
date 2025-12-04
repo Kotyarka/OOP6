@@ -102,10 +102,10 @@ void clear_input()
 
 void add_npc_manual(set_t& npcs)
 {
-    std::cout << "\n=== ДОБАВЛЕНИЕ NPC ===" << std::endl;
-    std::cout << "1. Дракон" << std::endl;
-    std::cout << "2. Странствующий рыцарь" << std::endl;
-    std::cout << "3. Эльф" << std::endl;
+    std::cout << "\n=== ADD NPC ===" << std::endl;
+    std::cout << "1. Dragon" << std::endl;
+    std::cout << "2. Wandering Knight" << std::endl;
+    std::cout << "3. Elf" << std::endl;
     
     int type_choice;
     std::cin >> type_choice;
@@ -131,7 +131,7 @@ void add_npc_manual(set_t& npcs)
     }
     
     clear_input();
-    std::cout << "Имя: ";
+    std::cout << "Name: ";
     std::string name;
     std::getline(std::cin, name);
     
@@ -147,10 +147,10 @@ void add_npc_manual(set_t& npcs)
 
 void remove_npc(set_t& npcs)
 {
-    std::cout << "\n=== УДАЛЕНИЕ NPC ===" << std::endl;
+    std::cout << "\n=== REMOVE NPC ===" << std::endl;
     print_all(npcs);
     
-    std::cout << "Номер: ";
+    std::cout << "Number: ";
     int index;
     std::cin >> index;
     
@@ -169,15 +169,15 @@ void remove_npc(set_t& npcs)
 
 void start_combat_mode(set_t& npcs)
 {
-    std::cout << "\n=== БОЕВОЙ РЕЖИМ ===" << std::endl;
+    std::cout << "\n=== COMBAT MODE ===" << std::endl;
     
     int distance;
-    std::cout << "Дальность боя: ";
+    std::cout << "Combat distance: ";
     std::cin >> distance;
     
     if (distance <= 0)
     {
-        std::cout << "Дальность должна быть положительной!" << std::endl;
+        std::cout << "Distance must be positive!" << std::endl;
         clear_input();
         return;
     }
@@ -190,7 +190,7 @@ void start_combat_mode(set_t& npcs)
     
     FightManager::get().clear_events();
     
-    std::cout << "Боевой режим запущен! Нажмите Enter для остановки..." << std::endl;
+    std::cout << "Combat mode started! Press Enter to stop..." << std::endl;
     
     std::thread fight_thread(std::ref(FightManager::get()));
     
@@ -264,9 +264,9 @@ void start_combat_mode(set_t& npcs)
         
         std::cout << "\033[2J\033[1;1H";
         
-        std::cout << "=== БОЕВОЙ РЕЖИМ ===" << std::endl;
-        std::cout << "D - Дракон, K - Рыцарь, E - Эльф, . - мертвый" << std::endl;
-        std::cout << "Нажмите Enter для остановки" << std::endl << std::endl;
+        std::cout << "=== COMBAT MODE ===" << std::endl;
+        std::cout << "D - Dragon, K - Knight, E - Elf, . - dead" << std::endl;
+        std::cout << "Press Enter to stop" << std::endl << std::endl;
         
         for (int j = 0; j < grid; ++j)
         {
@@ -301,10 +301,10 @@ void start_combat_mode(set_t& npcs)
         }
         
         std::cout << std::endl;
-        std::cout << "Статистика:" << std::endl;
-        std::cout << "Живых: " << alive_count << " (Драконов: " << dragon_count 
-                  << ", Рыцарей: " << knight_count << ", Эльфов: " << elf_count << ")" << std::endl;
-        std::cout << "Мертвых: " << (npcs.size() - alive_count) << std::endl;
+        std::cout << "Statistics:" << std::endl;
+        std::cout << "Alive: " << alive_count << " (Dragons: " << dragon_count 
+                  << ", Knights: " << knight_count << ", Elves: " << elf_count << ")" << std::endl;
+        std::cout << "Dead: " << (npcs.size() - alive_count) << std::endl;
         
         std::this_thread::sleep_for(500ms);
     }
@@ -317,7 +317,7 @@ void start_combat_mode(set_t& npcs)
     if (fight_thread.joinable())
         fight_thread.detach();
     
-    std::cout << "\nБоевой режим остановлен!" << std::endl;
+    std::cout << "\nCombat mode stopped!" << std::endl;
     
     set_t alive_npcs;
     for (auto& npc : npcs)
@@ -327,8 +327,8 @@ void start_combat_mode(set_t& npcs)
     }
     npcs = std::move(alive_npcs);
     
-    std::cout << "Осталось живых NPC: " << npcs.size() << std::endl;
-    std::cout << "Нажмите Enter для продолжения...";
+    std::cout << "Remaining alive NPCs: " << npcs.size() << std::endl;
+    std::cout << "Press Enter to continue...";
     std::cin.get();
 }
 
@@ -338,17 +338,16 @@ void editor_mode(set_t& npcs)
     
     while (running)
     {
-        std::cout << "\n=== РЕДАКТОР NPC ===" << std::endl;
-        std::cout << "1. Добавить NPC" << std::endl;
-        std::cout << "2. Удалить NPC" << std::endl;
-        std::cout << "3. Показать всех NPC" << std::endl;
-        std::cout << "4. Сохранить в файл" << std::endl;
-        std::cout << "5. Загрузить из файла" << std::endl;
-        std::cout << "6. Запустить боевой режим" << std::endl;
-        std::cout << "7. Сгенерировать случайных NPC" << std::endl;
-        std::cout << "8. Быстрый бой" << std::endl;
-        std::cout << "9. Выйти" << std::endl;
-        std::cout << "Выбор: ";
+        std::cout << "\n=== NPC EDITOR ===" << std::endl;
+        std::cout << "1. Add NPC" << std::endl;
+        std::cout << "2. Remove NPC" << std::endl;
+        std::cout << "3. Show all NPCs" << std::endl;
+        std::cout << "4. Save to file" << std::endl;
+        std::cout << "5. Load from file" << std::endl;
+        std::cout << "6. Start combat mode" << std::endl;
+        std::cout << "7. Generate random NPCs" << std::endl;
+        std::cout << "8. Exit" << std::endl;
+        std::cout << "Choice: ";
         
         int choice;
         std::cin >> choice;
@@ -371,7 +370,7 @@ void editor_mode(set_t& npcs)
         case 4:
             {
                 std::string filename;
-                std::cout << "Имя файла: ";
+                std::cout << "Filename: ";
                 std::getline(std::cin, filename);
                 save(npcs, filename);
             }
@@ -380,7 +379,7 @@ void editor_mode(set_t& npcs)
         case 5:
             {
                 std::string filename;
-                std::cout << "Имя файла: ";
+                std::cout << "Filename: ";
                 std::getline(std::cin, filename);
                 npcs = load(filename);
             }
@@ -392,7 +391,7 @@ void editor_mode(set_t& npcs)
             
         case 7:
             {
-                std::cout << "Сколько NPC сгенерировать? ";
+                std::cout << "How many NPCs to generate? ";
                 int count;
                 std::cin >> count;
                 clear_input();
@@ -405,70 +404,16 @@ void editor_mode(set_t& npcs)
                     auto npc = NPCFactory::create(type, x, y);
                     if (npc) npcs.insert(npc);
                 }
-                std::cout << "Сгенерировано " << std::min(count, 100) << " NPC" << std::endl;
+                std::cout << "Generated " << std::min(count, 100) << " NPCs" << std::endl;
             }
             break;
             
         case 8:
-            {
-                std::cout << "Дальность быстрого боя: ";
-                int distance;
-                std::cin >> distance;
-                clear_input();
-                
-                if (distance > 0)
-                {
-                    set_t dead_list;
-                    
-                    for (const auto &attacker : npcs)
-                        for (const auto &defender : npcs)
-                            if ((attacker != defender) &&
-                                attacker->is_alive() &&
-                                defender->is_alive() &&
-                                attacker->is_close(defender, distance))
-                            {
-                                bool attacker_wins = defender->accept(attacker);
-                                bool defender_wins = attacker->accept(defender);
-                                
-                                if (attacker_wins && defender_wins)
-                                {
-                                    attacker->must_die();
-                                    defender->must_die();
-                                    dead_list.insert(attacker);
-                                    dead_list.insert(defender);
-                                }
-                                else if (attacker_wins)
-                                {
-                                    defender->must_die();
-                                    dead_list.insert(defender);
-                                }
-                                else if (defender_wins)
-                                {
-                                    attacker->must_die();
-                                    dead_list.insert(attacker);
-                                }
-                            }
-                    
-                    set_t alive_npcs;
-                    for (auto& npc : npcs)
-                    {
-                        if (npc->is_alive())
-                            alive_npcs.insert(npc);
-                    }
-                    npcs = std::move(alive_npcs);
-                    
-                    std::cout << "Бой завершен. Убито: " << dead_list.size() 
-                              << ", осталось: " << npcs.size() << std::endl;
-                }
-            }
-            break;
-            
-        case 9:
             running = false;
             break;
             
         default:
-            std::cout << "Неверный выбор!" << std::endl;
+            std::cout << "Invalid choice!" << std::endl;
             break;
         }
     }
@@ -480,15 +425,14 @@ int main()
     
     set_t npcs;
     
-    std::cout << "=== СИМУЛЯТОР NPC ===" << std::endl;
-    std::cout << "Правила боев:" << std::endl;
-    std::cout << "- Дракон убивает всех (включая других драконов)" << std::endl;
-    std::cout << "- Странствующий рыцарь убивает дракона" << std::endl;
-    std::cout << "- Эльф убивает странствующего рыцаря" << std::endl;
-    std::cout << "- Взаимные убийства возможны" << std::endl;
+    std::cout << "=== BULGURS BOWL ONLINE WITHOUT INTERNET ===" << std::endl;
+    std::cout << "Combat rules:" << std::endl;
+    std::cout << "- Dragon kills everyone (including other dragons)" << std::endl;
+    std::cout << "- Wandering knight kills dragon" << std::endl;
+    std::cout << "- Elf kills wandering knight" << std::endl;
     std::cout << "====================" << std::endl;
     
-    std::cout << "Генерация начальных NPC..." << std::endl;
+    std::cout << "Generating initial NPCs..." << std::endl;
     for (size_t i = 0; i < 10; ++i)
     {
         NpcType type = static_cast<NpcType>((std::rand() % 3) + 1);
